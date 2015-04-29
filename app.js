@@ -10,10 +10,6 @@ var _ = require('lodash');
 var session = require('express-session');
 var passport = require('passport');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var auth = require('./routes/auth');
-
 // the app
 var app = module.exports = express();
 var env = app.get('env');
@@ -64,9 +60,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // import routes
-app.use('/', routes);
-app.use('/users', users);
-app.use('/auth', auth);
+app.use('/', require('./routes/index'));
+app.use('/users', require('./routes/users'));
+app.use('/auth', require('./routes/auth'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -97,4 +93,14 @@ app.use(function(err, req, res, next) {
     message: err.message,
     error: {}
   });
+});
+
+
+var server = app.listen(3000, function () {
+
+  var host = server.address().address;
+  var port = server.address().port;
+
+  console.log('Example app listening at http://%s:%s', host, port);
+
 });
